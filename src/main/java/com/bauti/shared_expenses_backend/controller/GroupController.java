@@ -32,4 +32,9 @@ public class GroupController {
     public Optional<Group> getGroupById(@PathVariable int id) {
         return groupService.getGroupById(id);
     }
+
+    @DeleteMapping("/groups/{id}/delete")
+    public void deleteGroup(@PathVariable int id) {
+        groupService.deleteGroup(id);
+    }
 }

@@ -2,6 +2,7 @@ package com.bauti.shared_expenses_backend.controller;
 
 import org.springframework.web.bind.annotation.*;
 import com.bauti.shared_expenses_backend.service.ExpenseService;
+import com.bauti.shared_expenses_backend.dto.CreateExpenseRequest;
 import com.bauti.shared_expenses_backend.model.Expense;
 
 import java.util.List;
@@ -18,19 +19,14 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public Expense createExpense(
-        @RequestParam String description,
-        @RequestParam double amount,
-        @RequestParam int payerId,
-        @RequestParam List<Integer> participantIds,
-        @RequestParam int groupId) {
+    public Expense createExpense(@RequestBody CreateExpenseRequest request) {
 
         return expenseService.createExpense(
-            description,
-            amount,
-            payerId, 
-            participantIds, 
-            groupId
+            request.getDescription(),
+            request.getAmount(),
+            request.getPayerId(),
+            request.getParticipantIds(),
+            request.getGroupId()
         );
     }
 
