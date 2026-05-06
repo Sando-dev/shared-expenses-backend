@@ -26,4 +26,8 @@ public class GroupService {
                 .findFirst();
     }
 
+    public List<Group> getGroups() {
+        return groups;
+    }
+
 }

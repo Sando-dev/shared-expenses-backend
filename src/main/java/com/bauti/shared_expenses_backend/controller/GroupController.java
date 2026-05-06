@@ -5,6 +5,10 @@ import com.bauti.shared_expenses_backend.model.Group;
 import com.bauti.shared_expenses_backend.service.GroupService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
+
 @RestController
 public class GroupController {
 
@@ -19,4 +23,13 @@ public class GroupController {
         return groupService.createGroup(name);
     }
 
+    @GetMapping("/groups")
+    public List<Group> getGroups() {
+        return groupService.getGroups();
+    }
+
+    @GetMapping("/groups/{id}")
+    public Optional<Group> getGroupById(@PathVariable int id) {
+        return groupService.getGroupById(id);
+    }
 }
