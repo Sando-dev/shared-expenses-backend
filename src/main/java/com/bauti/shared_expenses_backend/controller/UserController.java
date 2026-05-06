@@ -1,7 +1,9 @@
 package com.bauti.shared_expenses_backend.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.bauti.shared_expenses_backend.service.UserService;
+import com.bauti.shared_expenses_backend.dto.CreateUserRequest;
 import com.bauti.shared_expenses_backend.model.User;
 
 import java.util.List;
@@ -18,8 +20,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(String name) {
-        return userService.createUser(name);
+    public User createUser(@RequestBody CreateUserRequest request) {
+        return userService.createUser(request.getName());
     }
 
     @GetMapping
@@ -28,12 +30,19 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(int id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(int id) {
+        Optional<User> user =  userService.getUserById(id);
+        if(user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.get());
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteUser(int id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Void> deleteUser(int id) {
+        if(!userService.deleteUser(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 }

@@ -30,8 +30,8 @@ public class GroupService {
         return groups;
     }
 
-    public void deleteGroup(int id) {
-        groups.removeIf(group -> group.getId() == id);
+    public boolean deleteGroup(int id) {
+        return groups.removeIf(group -> group.getId() == id);
     }
 
 }

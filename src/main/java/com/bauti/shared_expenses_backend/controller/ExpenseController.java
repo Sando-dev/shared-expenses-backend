@@ -1,5 +1,6 @@
 package com.bauti.shared_expenses_backend.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.bauti.shared_expenses_backend.service.ExpenseService;
 import com.bauti.shared_expenses_backend.dto.CreateExpenseRequest;
@@ -36,17 +37,28 @@ public class ExpenseController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Expense> getExpenseById(@PathVariable int id) {
-        return Optional.ofNullable(expenseService.getExpenseById(id));
+    public ResponseEntity<Expense> getExpenseById(@PathVariable int id) {
+        Optional<Expense> expense = expenseService.getExpenseById(id);
+        if (expense.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(expense.get());
     }
 
     @GetMapping("/groups/{groupId}")
-    public List<Expense> getExpensesByGroupId(@PathVariable int groupId) {
-        return expenseService.getExpensesByGroupId(groupId);
+    public ResponseEntity<List<Expense>> getExpensesByGroupId(@PathVariable int groupId) {
+        List<Expense> expenses = expenseService.getExpensesByGroupId(groupId);
+        if (expenses.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(expenses);
     }
 
     @DeleteMapping("/{id}/delete")
-    public void deleteExpense(@PathVariable int id) {
-        expenseService.deleteExpense(id);
+    public ResponseEntity<Void> deleteExpense(@PathVariable int id) {
+        if(expenseService.deleteExpense(id)) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

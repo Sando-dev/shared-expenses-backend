@@ -30,7 +30,7 @@ public class UserService {
                 .findFirst();
     }
     
-    public void deleteUser(int id) {
-        users.removeIf(user -> user.getId() == id);
+    public boolean deleteUser(int id) {
+        return users.removeIf(user -> user.getId() == id);
     }
 }

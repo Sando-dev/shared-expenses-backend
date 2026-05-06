@@ -4,6 +4,7 @@ import com.bauti.shared_expenses_backend.model.Expense;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -20,13 +21,10 @@ public class ExpenseService {
         return expense;
     }
 
-    public Expense getExpenseById(int id) {
-        for (Expense expense : expenses) {
-            if (expense.getId() == id) {
-                return expense;
-            }
-        }
-        return null;
+    public Optional<Expense> getExpenseById(int id) {
+        return expenses.stream()
+                .filter(expense -> expense.getId() == id)
+                .findFirst();
     }
 
     public List<Expense> getExpenses() {
@@ -43,7 +41,7 @@ public class ExpenseService {
         return result;
     }
 
-     public void deleteExpense(int id) {
-        expenses.removeIf(expense -> expense.getId() == id);
+     public boolean deleteExpense(int id) {
+        return expenses.removeIf(expense -> expense.getId() == id);
     }
 }
