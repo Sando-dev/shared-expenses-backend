@@ -13,8 +13,8 @@ public class GroupService {
     private final List<Group> groups = new ArrayList<>();
     private int nextId = 1;
 
-    public Group createGroup(String name) {
-        Group group = new Group(nextId, name);
+    public Group createGroup(String name, List<Integer> memberIds) {
+        Group group = new Group(nextId, name, memberIds);
         groups.add(group);
         nextId++;
         return group;

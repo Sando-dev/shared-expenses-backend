@@ -24,7 +24,7 @@ public class GroupController {
 
     @PostMapping
     public Group createGroup(@RequestBody CreateGroupRequest request) {
-        return groupService.createGroup(request.getName());
+        return groupService.createGroup(request.getName(), request.getMemberIds());
     }
 
     @GetMapping
