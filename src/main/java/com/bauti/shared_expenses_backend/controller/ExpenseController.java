@@ -20,21 +20,26 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public Expense createExpense(@RequestBody CreateExpenseRequest request) {
+    public ResponseEntity<Expense> createExpense(@RequestBody CreateExpenseRequest request) {
 
-        return expenseService.createExpense(
-            request.getDescription(),
-            request.getAmount(),
-            request.getPayerId(),
-            request.getParticipantIds(),
-            request.getGroupId()
-        );
+        try {
+            Expense expense = expenseService.createExpense(
+                request.getDescription(),
+                request.getAmount(),
+                request.getPayerId(), 
+                request.getParticipantIds(),
+                request.getGroupId()
+            );
+            return ResponseEntity.ok(expense);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping
     public List<Expense> getExpenses() {
         return expenseService.getExpenses();
-    }
+    }   
 
     @GetMapping("/{id}")
     public ResponseEntity<Expense> getExpenseById(@PathVariable int id) {

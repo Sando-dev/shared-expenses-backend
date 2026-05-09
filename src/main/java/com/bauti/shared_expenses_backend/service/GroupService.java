@@ -13,7 +13,20 @@ public class GroupService {
     private final List<Group> groups = new ArrayList<>();
     private int nextId = 1;
 
+    private final UserService userService;
+
+    public GroupService(UserService userService) {
+        this.userService = userService;
+    }
+
     public Group createGroup(String name, List<Integer> memberIds) {
+
+        for(Integer memberId : memberIds) {
+            if(userService.getUserById(memberId).isEmpty()) {
+                throw new IllegalArgumentException("User with id " + memberId + " does not exist");
+            }
+        }
+        
         Group group = new Group(nextId, name, memberIds);
         groups.add(group);
         nextId++;

@@ -23,8 +23,16 @@ public class GroupController {
     }
 
     @PostMapping
-    public Group createGroup(@RequestBody CreateGroupRequest request) {
-        return groupService.createGroup(request.getName(), request.getMemberIds());
+    public ResponseEntity<Group> createGroup(@RequestBody CreateGroupRequest request) {
+        try {
+            Group group = groupService.createGroup(
+                request.getName(),
+                request.getMemberIds()
+            );
+            return ResponseEntity.ok(group);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping
