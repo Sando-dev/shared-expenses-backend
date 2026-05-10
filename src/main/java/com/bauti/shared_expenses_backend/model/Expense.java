@@ -2,8 +2,15 @@ package com.bauti.shared_expenses_backend.model;
 
 import java.util.List;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "expenses_table")
 public class Expense {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private int id;
     private String description;
     private double amount;

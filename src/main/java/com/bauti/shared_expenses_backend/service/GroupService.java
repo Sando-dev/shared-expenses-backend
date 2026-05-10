@@ -1,21 +1,22 @@
 package com.bauti.shared_expenses_backend.service;
 
 import com.bauti.shared_expenses_backend.model.Group;
+import com.bauti.shared_expenses_backend.repository.GroupRepository;
+
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class GroupService {
     
-    private final List<Group> groups = new ArrayList<>();
-    private int nextId = 1;
-
+    private final GroupRepository groupRepository;
     private final UserService userService;
 
-    public GroupService(UserService userService) {
+
+    public GroupService(GroupRepository groupRepository, UserService userService) {
+        this.groupRepository = groupRepository;
         this.userService = userService;
     }
 
@@ -26,25 +27,28 @@ public class GroupService {
                 throw new IllegalArgumentException("User with id " + memberId + " does not exist");
             }
         }
-        
-        Group group = new Group(nextId, name, memberIds);
-        groups.add(group);
-        nextId++;
+
+        Group group = new Group();
+        group.setName(name);
+        group.setMemberIds(memberIds);
+        groupRepository.save(group);
         return group;
     }
 
     public Optional<Group> getGroupById(int id) {
-        return groups.stream()
-                .filter(group -> group.getId() == id)
-                .findFirst();
+        return groupRepository.findById(id);
     }
 
     public List<Group> getGroups() {
-        return groups;
+        return groupRepository.findAll();
     }
 
     public boolean deleteGroup(int id) {
-        return groups.removeIf(group -> group.getId() == id);
+        if(groupRepository.existsById(id)) {
+            groupRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }

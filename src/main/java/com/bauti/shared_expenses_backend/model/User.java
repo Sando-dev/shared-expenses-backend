@@ -1,6 +1,14 @@
 package com.bauti.shared_expenses_backend.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users_table")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
     private String name;
 

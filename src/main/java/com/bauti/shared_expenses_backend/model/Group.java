@@ -2,7 +2,15 @@ package com.bauti.shared_expenses_backend.model;
 
 import java.util.List;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "groups_table")
 public class Group {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private int id;
     private String name;
     private List<Integer> memberIds;
